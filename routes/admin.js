@@ -8,5 +8,7 @@ router.get("/facility", adminController.viewFacility);
 router.get("/booking", adminController.viewBooking);
 
 router.post("/add-category", adminController.addCategory);
+router.post("/edit-category", adminController.editCategory);
+router.post("/delete-category", adminController.deleteCategory);
 
 module.exports = router;
