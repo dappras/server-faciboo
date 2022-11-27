@@ -1,6 +1,8 @@
 const e = require("express");
 const Category = require("../models/category");
 const Bank = require("../models/bank");
+const Facility = require("../models/facility");
+const Image = require("../models/image");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -132,6 +134,45 @@ module.exports = {
 
   viewFacility: (req, res) => {
     res.render("admin/facility/view_facility.ejs");
+  },
+
+  addFacility: async (req, res) => {
+    try {
+      const { name, address, description, price, urlMaps, categoryId } =
+        req.body;
+      if (req.files.length > 0) {
+        const category = await Category.findOne({ _id: categoryId });
+        const newFacility = {
+          categoryId: category._id,
+          name,
+          address,
+          description,
+          price,
+          urlMaps,
+        };
+        const facility = await Facility.create(newFacility);
+
+        category.facilityId.push({ _id: facility._id });
+        await category.save();
+
+        for (let i = 0; i < req.files.length; i++) {
+          const imageSave = await Image.create({
+            imageUrl: `images/${req.files[i].filename}`,
+          });
+          facility.imageId.push({ _id: imageSave._id });
+          await facility.save();
+        }
+
+        res.json({
+          msg: "success create data",
+          data: facility,
+        });
+      }
+    } catch (e) {
+      res.json({
+        msg: e.message,
+      });
+    }
   },
 
   viewBooking: (req, res) => {
