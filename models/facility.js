@@ -22,12 +22,10 @@ const facilityScheme = new mongoose.Schema({
     type: String,
     required: true,
   },
-  categoryId: [
-    {
-      type: ObjectId,
-      ref: "Category",
-    },
-  ],
+  categoryId: {
+    type: ObjectId,
+    ref: "Category",
+  },
   imageId: [
     {
       type: ObjectId,
