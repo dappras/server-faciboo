@@ -5,7 +5,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 // mongoose
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/db_faciboo");
+mongoose.connect(
+  "mongodb+srv://daffarasyid:daffa768@cluster0.nd5kiay.mongodb.net/db_faciboo?retryWrites=true&w=majority"
+);
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
