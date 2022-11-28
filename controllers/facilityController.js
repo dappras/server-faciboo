@@ -19,6 +19,20 @@ module.exports = {
     }
   },
 
+  getDetailFacility: async (req, res) => {
+    try {
+      const { id } = req.body;
+      const facility = await Facility.findOne({ _id: id });
+      if (facility === []) {
+        res.json({ msg: "success getting data", data: [] });
+      } else {
+        res.json({ msg: "success getting data", data: facility });
+      }
+    } catch (e) {
+      res.json({ msg: e.message });
+    }
+  },
+
   addFacility: async (req, res) => {
     try {
       const { name, address, description, price, urlMaps, categoryId } =

@@ -18,6 +18,20 @@ module.exports = {
     }
   },
 
+  getDetailBank: async (req, res) => {
+    try {
+      const { id } = req.body;
+      const bank = await Bank.findOne({ _id: id });
+      if (bank === []) {
+        res.json({ msg: "success getting data", data: [] });
+      } else {
+        res.json({ msg: "success getting data", data: bank });
+      }
+    } catch (e) {
+      res.json({ msg: e.message });
+    }
+  },
+
   addBank: async (req, res) => {
     try {
       const { name, nameBank, nomorRekening } = req.body;

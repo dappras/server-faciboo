@@ -5,7 +5,25 @@ module.exports = {
   getCategory: async (req, res) => {
     try {
       const category = await Category.find();
-      res.json({ msg: "success getting data", data: category });
+      if (category === []) {
+        res.json({ msg: "success getting data", data: [] });
+      } else {
+        res.json({ msg: "success getting data", data: category });
+      }
+    } catch (e) {
+      res.json({ msg: e.message });
+    }
+  },
+
+  getDetailCategory: async (req, res) => {
+    try {
+      const { id } = req.id;
+      const category = await Category.findOne({ _id: id });
+      if (category === []) {
+        res.json({ msg: "success getting data", data: [] });
+      } else {
+        res.json({ msg: "success getting data", data: category });
+      }
     } catch (e) {
       res.json({ msg: e.message });
     }
