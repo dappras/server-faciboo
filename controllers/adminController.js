@@ -175,6 +175,119 @@ module.exports = {
     }
   },
 
+  editFacility: async (req, res) => {
+    try {
+      const { id, name, address, description, price, urlMaps, categoryId } =
+        req.body;
+
+      const facility = await Facility.findOne({ _id: id });
+
+      if (req.files.length > 0) {
+        for (let i = 0; i < facility.imageId.length; i++) {
+          const imageSave = await Image.findOne({
+            _id: facility.imageId[i]._id,
+          });
+          await fs.unlink(path.join(`public/${imageSave.imageUrl}`));
+          imageSave.imageUrl = `images/${req.files[i].filename}`;
+          await imageSave.save();
+        }
+        facility.name = name;
+        facility.address = address;
+        facility.description = description;
+        facility.price = price;
+        facility.urlMaps = urlMaps;
+
+        if (facility.categoryId === categoryId) {
+          facility.categoryId = categoryId;
+        } else {
+          const category = await Category.findOne({ _id: facility.categoryId });
+          await Category.updateMany(
+            {},
+            { $pull: { facilityId: { $in: [id] } } }
+          );
+          await category.save();
+
+          const categoryNew = await Category.findOne({ _id: categoryId });
+          categoryNew.facilityId.push({ _id: id });
+          await categoryNew.save();
+
+          facility.categoryId = categoryId;
+        }
+
+        await facility.save();
+
+        res.json({
+          msg: "success update data",
+          data: facility,
+        });
+      } else {
+        facility.name = name;
+        facility.address = address;
+        facility.description = description;
+        facility.price = price;
+        facility.urlMaps = urlMaps;
+        facility.categoryId = categoryId;
+
+        if (facility.categoryId === categoryId) {
+          facility.categoryId = categoryId;
+        } else {
+          const category = await Category.findOne({ _id: facility.categoryId });
+          await Category.updateMany(
+            {},
+            { $pull: { facilityId: { $in: [id] } } }
+          );
+          await category.save();
+
+          const categoryNew = await Category.findOne({ _id: categoryId });
+          categoryNew.facilityId.push({ _id: id });
+          await categoryNew.save();
+
+          facility.categoryId = categoryId;
+        }
+
+        await facility.save();
+
+        res.json({
+          msg: "success update data",
+          data: facility,
+        });
+      }
+    } catch (e) {
+      res.json({
+        msg: e.message,
+      });
+    }
+  },
+
+  deleteFacility: async (req, res) => {
+    try {
+      const { id } = req.body;
+      const facility = await Facility.findOne({ _id: id });
+
+      for (let i = 0; i < facility.imageId.length; i++) {
+        await Image.findOne({ _id: facility.imageId[i]._id })
+          .then((image) => {
+            fs.unlink(path.join(`public/${image.imageUrl}`));
+            image.remove();
+          })
+          .catch((e) => {
+            res.json({
+              msg: e.message,
+            });
+          });
+      }
+      const category = await Category.findOne({ _id: facility.categoryId });
+      await Category.updateMany({}, { $pull: { facilityId: { $in: [id] } } });
+      await category.save();
+      await facility.remove();
+      res.json({ msg: "success delete data" });
+    } catch (e) {
+      res.json({
+        msg: e.message,
+      });
+    }
+  },
+
   viewBooking: (req, res) => {
     res.render("admin/booking/view_booking.ejs");
   },
