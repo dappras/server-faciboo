@@ -17,7 +17,7 @@ module.exports = {
 
   getDetailCategory: async (req, res) => {
     try {
-      const { id } = req.id;
+      const { id } = req.body;
       const category = await Category.findOne({ _id: id });
       if (category === []) {
         res.json({ msg: "success getting data", data: [] });
