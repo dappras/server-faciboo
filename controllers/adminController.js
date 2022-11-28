@@ -136,6 +136,19 @@ module.exports = {
     res.render("admin/facility/view_facility.ejs");
   },
 
+  getFacility: async (req, res) => {
+    try {
+      const facility = await Facility.find();
+      if (facility === []) {
+        res.json({ msg: "success getting data", data: [] });
+      } else {
+        res.json({ msg: "success getting data", data: facility });
+      }
+    } catch (e) {
+      res.json({ msg: e.message });
+    }
+  },
+
   addFacility: async (req, res) => {
     try {
       const { name, address, description, price, urlMaps, categoryId } =

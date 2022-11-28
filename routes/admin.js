@@ -18,6 +18,7 @@ router.post("/add-bank", uploadSingle, adminController.addBank);
 router.post("/edit-bank", uploadSingle, adminController.editBank);
 router.post("/delete-bank", uploadSingle, adminController.deleteBank);
 
+router.post("/get-facility", adminController.getFacility);
 router.post("/add-facility", uploadMultiple, adminController.addFacility);
 router.post("/edit-facility", uploadMultiple, adminController.editFacility);
 router.post("/delete-facility", uploadMultiple, adminController.deleteFacility);
