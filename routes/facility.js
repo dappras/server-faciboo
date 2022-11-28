@@ -3,6 +3,7 @@ const facilityController = require("../controllers/facilityController");
 const { uploadSingle, uploadMultiple } = require("../middlewares/multer");
 
 router.post("/get-facility", facilityController.getFacility);
+router.post("/get-detail-facility", facilityController.getDetailFacility);
 router.post("/add-facility", uploadMultiple, facilityController.addFacility);
 router.post("/edit-facility", uploadMultiple, facilityController.editFacility);
 router.post(
