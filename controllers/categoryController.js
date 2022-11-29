@@ -1,5 +1,6 @@
 const express = require("express");
 const Category = require("../models/category");
+const Facility = require("../models/facility");
 
 module.exports = {
   getCategory: async (req, res) => {
@@ -81,6 +82,30 @@ module.exports = {
       return res.json({ success: true, msg: "success delete data" });
     } catch (e) {
       return res.json({ success: false, msg: e.message });
+    }
+  },
+
+  facilityByCategory: async (req, res) => {
+    const { id } = req.body;
+    try {
+      const category = await Category.findOne({ _id: id });
+      const arrFacility = [];
+
+      for (let i = 0; i < category.facilityId.length; i++) {
+        let facility = await Facility.findOne({ _id: category.facilityId[i] });
+        arrFacility.push(facility);
+      }
+
+      return res.json({
+        success: true,
+        msg: "success getting data",
+        data: arrFacility,
+      });
+    } catch (e) {
+      return res.json({
+        success: false,
+        msg: e.message,
+      });
     }
   },
 };

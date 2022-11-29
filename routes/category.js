@@ -11,5 +11,10 @@ router.post(
 router.post("/add-category", authLogin, categoryController.addCategory);
 router.post("/edit-category", authLogin, categoryController.editCategory);
 router.post("/delete-category", authLogin, categoryController.deleteCategory);
+router.post(
+  "/facility-by-category",
+  authLogin,
+  categoryController.facilityByCategory
+);
 
 module.exports = router;
