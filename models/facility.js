@@ -22,6 +22,10 @@ const facilityScheme = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hourAvailable: {
+    type: Array,
+    required: true,
+  },
   categoryId: {
     type: ObjectId,
     ref: "Category",

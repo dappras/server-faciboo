@@ -51,8 +51,15 @@ module.exports = {
 
   addFacility: async (req, res) => {
     try {
-      const { name, address, description, price, urlMaps, categoryId } =
-        req.body;
+      const {
+        name,
+        address,
+        description,
+        price,
+        urlMaps,
+        categoryId,
+        hourAvailable,
+      } = req.body;
       if (req.files.length > 0) {
         const category = await Category.findOne({ _id: categoryId });
         const newFacility = {
@@ -62,6 +69,7 @@ module.exports = {
           description,
           price,
           urlMaps,
+          hourAvailable,
         };
         const facility = await Facility.create(newFacility);
 
@@ -92,8 +100,16 @@ module.exports = {
 
   editFacility: async (req, res) => {
     try {
-      const { id, name, address, description, price, urlMaps, categoryId } =
-        req.body;
+      const {
+        id,
+        name,
+        address,
+        description,
+        price,
+        urlMaps,
+        hourAvailable,
+        categoryId,
+      } = req.body;
 
       const facility = await Facility.findOne({ _id: id });
 
@@ -111,6 +127,7 @@ module.exports = {
         facility.description = description;
         facility.price = price;
         facility.urlMaps = urlMaps;
+        facility.hourAvailable = hourAvailable;
 
         if (facility.categoryId === categoryId) {
           facility.categoryId = categoryId;
