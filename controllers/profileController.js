@@ -28,12 +28,17 @@ module.exports = {
       const token = req.token;
       const profile = await User.findOne({ token: token });
 
-      const salt = await bcrypt.genSalt(10);
-      const hashPassword = await bcrypt.hash(password, salt);
+      if (password === undefined) {
+        profile.name = name;
+        profile.token = token;
+      } else {
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(password, salt);
 
-      profile.name = name;
-      profile.password = hashPassword;
-      profile.token = token;
+        profile.name = name;
+        profile.password = hashPassword;
+        profile.token = token;
+      }
 
       await profile.save();
 
