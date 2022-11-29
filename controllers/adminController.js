@@ -1,10 +1,5 @@
 const e = require("express");
 const Category = require("../models/category");
-const Bank = require("../models/bank");
-const Facility = require("../models/facility");
-const Image = require("../models/image");
-const fs = require("fs-extra");
-const path = require("path");
 
 module.exports = {
   viewDashboard: (req, res) => {

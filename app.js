@@ -1,3 +1,4 @@
+require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -5,9 +6,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 // mongoose
 const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://daffarasyid:daffa768@cluster0.nd5kiay.mongodb.net/db_faciboo?retryWrites=true&w=majority"
-);
+mongoose.connect(process.env.DB_CONNECTION);
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -16,6 +15,7 @@ const adminRouter = require("./routes/admin");
 const categoryRouter = require("./routes/category");
 const bankRouter = require("./routes/bank");
 const facilityRouter = require("./routes/facility");
+const userRouter = require("./routes/user");
 
 var app = express();
 
@@ -39,6 +39,7 @@ app.use("/admin", adminRouter);
 app.use("/category", categoryRouter);
 app.use("/bank", bankRouter);
 app.use("/facility", facilityRouter);
+app.use("/user", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
