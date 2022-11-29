@@ -9,13 +9,13 @@ module.exports = {
     try {
       const token = req.token;
       const profile = await User.findOne({ token: token });
-      res.json({
+      return res.json({
         success: true,
         msg: "success get data",
         data: profile,
       });
     } catch (e) {
-      res.json({
+      return res.json({
         success: false,
         msg: e.message,
       });

@@ -6,12 +6,20 @@ module.exports = {
     try {
       const category = await Category.find();
       if (category === []) {
-        res.json({ msg: "success getting data", data: [] });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
       } else {
-        res.json({ msg: "success getting data", data: category });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: category,
+        });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -20,12 +28,20 @@ module.exports = {
       const { id } = req.body;
       const category = await Category.findOne({ _id: id });
       if (category === []) {
-        res.json({ msg: "success getting data", data: [] });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
       } else {
-        res.json({ msg: "success getting data", data: category });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: category,
+        });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -33,11 +49,13 @@ module.exports = {
     try {
       const { name } = req.body;
       const hasil = await Category.create({ name });
-      res.json({ msg: "success create data", data: hasil });
-      res.redirect("/admin/category");
+      return res.json({
+        success: true,
+        msg: "success create data",
+        data: hasil,
+      });
     } catch (error) {
-      res.json({ msg: e.message });
-      res.redirect("/admin/category");
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -48,9 +66,9 @@ module.exports = {
       category.name = name;
       await category.save();
 
-      res.json({ msg: "success update data" });
+      return res.json({ success: true, msg: "success update data" });
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -60,9 +78,9 @@ module.exports = {
       const category = await Category.findOne({ _id: id });
       await category.delete();
 
-      res.json({ msg: "success delete data" });
+      return res.json({ success: true, msg: "success delete data" });
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 };

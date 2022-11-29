@@ -10,12 +10,20 @@ module.exports = {
     try {
       const facility = await Facility.find();
       if (facility === []) {
-        res.json({ msg: "success getting data", data: [] });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
       } else {
-        res.json({ msg: "success getting data", data: facility });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: facility,
+        });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -24,12 +32,20 @@ module.exports = {
       const { id } = req.body;
       const facility = await Facility.findOne({ _id: id });
       if (facility === []) {
-        res.json({ msg: "success getting data", data: [] });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
       } else {
-        res.json({ msg: "success getting data", data: facility });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: facility,
+        });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -60,13 +76,15 @@ module.exports = {
           await facility.save();
         }
 
-        res.json({
+        return res.json({
+          success: true,
           msg: "success create data",
           data: facility,
         });
       }
     } catch (e) {
-      res.json({
+      return res.json({
+        success: false,
         msg: e.message,
       });
     }
@@ -113,7 +131,8 @@ module.exports = {
 
         await facility.save();
 
-        res.json({
+        return res.json({
+          success: true,
           msg: "success update data",
           data: facility,
         });
@@ -144,13 +163,15 @@ module.exports = {
 
         await facility.save();
 
-        res.json({
+        return res.json({
+          success: true,
           msg: "success update data",
           data: facility,
         });
       }
     } catch (e) {
-      res.json({
+      return res.json({
+        success: false,
         msg: e.message,
       });
     }
@@ -168,7 +189,8 @@ module.exports = {
             image.remove();
           })
           .catch((e) => {
-            res.json({
+            return res.json({
+              success: false,
               msg: e.message,
             });
           });
@@ -177,9 +199,10 @@ module.exports = {
       await Category.updateMany({}, { $pull: { facilityId: { $in: [id] } } });
       await category.save();
       await facility.remove();
-      res.json({ msg: "success delete data" });
+      return res.json({ success: true, msg: "success delete data" });
     } catch (e) {
-      res.json({
+      return res.json({
+        success: false,
         msg: e.message,
       });
     }

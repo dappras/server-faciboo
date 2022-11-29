@@ -9,12 +9,20 @@ module.exports = {
       const bank = await Bank.find();
       console.log(bank);
       if (bank === []) {
-        res.json({ msg: "success getting data", data: [] });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
       } else {
-        res.json({ msg: "success getting data", data: bank });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: bank,
+        });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -23,12 +31,20 @@ module.exports = {
       const { id } = req.body;
       const bank = await Bank.findOne({ _id: id });
       if (bank === []) {
-        res.json({ msg: "success getting data", data: [] });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
       } else {
-        res.json({ msg: "success getting data", data: bank });
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: bank,
+        });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -41,9 +57,13 @@ module.exports = {
         name,
         imageUrl: `images/${req.file.filename}`,
       });
-      res.json({ msg: "success create data", data: hasil });
+      return res.json({
+        success: true,
+        msg: "success create data",
+        data: hasil,
+      });
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -56,7 +76,7 @@ module.exports = {
         bank.nameBank = nameBank;
         bank.nomorRekening = nomorRekening;
         await bank.save();
-        res.json({ msg: "success update data" });
+        return res.json({ success: true, msg: "success update data" });
       } else {
         await fs.unlink(path.join(`public/${bank.imageUrl}`));
         bank.name = name;
@@ -64,10 +84,10 @@ module.exports = {
         bank.nomorRekening = nomorRekening;
         bank.imageUrl = `images/${req.file.filename}`;
         await bank.save();
-        res.json({ msg: "success update data" });
+        return res.json({ success: true, msg: "success update data" });
       }
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 
@@ -78,9 +98,9 @@ module.exports = {
       await fs.unlink(path.join(`public/${bank.imageUrl}`));
       await bank.remove();
 
-      res.json({ msg: "success delete data" });
+      return res.json({ success: true, msg: "success delete data" });
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ success: false, msg: e.message });
     }
   },
 };
