@@ -20,6 +20,7 @@ const authLogin = async (req, res, next) => {
   try {
     const verified = jwt.verify(token, process.env.SECRET_KEY);
     req.user = verified;
+    req.token = token;
     next();
   } catch (err) {
     res.json({

@@ -12,14 +12,14 @@ module.exports = {
       const checkEmail = await User.findOne({ email: email });
       const checkPhone = await User.findOne({ phoneNumber: phoneNumber });
       if (checkEmail) {
-        res.json({
+        return res.json({
           success: false,
           msg: "Email sudah digunakan!!",
         });
       }
 
       if (checkPhone) {
-        res.json({
+        return res.json({
           success: false,
           msg: "Nomor handphone sudah digunakan!!",
         });
@@ -37,13 +37,13 @@ module.exports = {
         phoneNumber,
         token,
       });
-      res.json({
+      return res.json({
         success: true,
         msg: "success create data",
         data: user,
       });
     } catch (e) {
-      res.json({ msg: e.message });
+      return res.json({ msg: e.message });
     }
   },
 
@@ -66,13 +66,13 @@ module.exports = {
         });
       }
 
-      res.json({
+      return res.json({
         success: true,
         msg: "Anda Berhasil Login!!",
         token: user.token,
       });
     } catch (error) {
-      res.json({ msg: e.message });
+      return res.json({ msg: e.message });
     }
   },
 };
