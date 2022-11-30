@@ -36,6 +36,10 @@ const facilityScheme = new mongoose.Schema({
       ref: "Image",
     },
   ],
+  userId: {
+    type: ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("Facility", facilityScheme);

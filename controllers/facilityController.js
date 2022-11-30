@@ -1,5 +1,6 @@
 const express = require("express");
 const Category = require("../models/category");
+const User = require("../models/user");
 const Facility = require("../models/facility");
 const Image = require("../models/image");
 const fs = require("fs-extra");
@@ -60,6 +61,9 @@ module.exports = {
         categoryId,
         hourAvailable,
       } = req.body;
+
+      const user = await User.findOne({ token: req.token });
+
       if (req.files.length > 0) {
         const category = await Category.findOne({ _id: categoryId });
         const newFacility = {
@@ -70,6 +74,7 @@ module.exports = {
           price,
           urlMaps,
           hourAvailable,
+          userId: user._id,
         };
         const facility = await Facility.create(newFacility);
 
@@ -217,6 +222,25 @@ module.exports = {
       await category.save();
       await facility.remove();
       return res.json({ success: true, msg: "success delete data" });
+    } catch (e) {
+      return res.json({
+        success: false,
+        msg: e.message,
+      });
+    }
+  },
+
+  getMyFacility: async (req, res) => {
+    try {
+      const user = await User.findOne({ token: req.token });
+
+      const facility = await Facility.find({ userId: user._id });
+
+      return res.json({
+        success: true,
+        msg: "success getting data!!",
+        data: facility,
+      });
     } catch (e) {
       return res.json({
         success: false,
