@@ -262,7 +262,7 @@ module.exports = {
         const hasil = [];
         for (let i = 0; i < 7; i++) {
           let waktu = new Date(now);
-          waktu.setDate(waktu.getDate() + i);
+          waktu.setDate(waktu.getDate() + i + 1);
           let tanggal = waktu.getDate();
           let bulan = waktu.getMonth() + 1;
           const data = {
