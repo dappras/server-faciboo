@@ -3,6 +3,7 @@ const Category = require("../models/category");
 const User = require("../models/user");
 const Facility = require("../models/facility");
 const Image = require("../models/image");
+const BookingDate = require("../models/booking-date");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -241,6 +242,83 @@ module.exports = {
         msg: "success getting data!!",
         data: facility,
       });
+    } catch (e) {
+      return res.json({
+        success: false,
+        msg: e.message,
+      });
+    }
+  },
+
+  getAvailableDate: async (req, res) => {
+    const { id } = req.body;
+    try {
+      const facility = await Facility.findOne({ _id: id });
+      const date = await BookingDate.find({ facilityId: facility._id });
+
+      if (date != []) {
+        let now = new Date();
+        let tahun = now.getFullYear();
+        const hasil = [];
+        for (let i = 0; i < 7; i++) {
+          let waktu = new Date(now);
+          waktu.setDate(waktu.getDate() + i);
+          let tanggal = waktu.getDate();
+          let bulan = waktu.getMonth() + 1;
+          const data = {
+            date: tanggal,
+            month: bulan,
+            year: tahun,
+            availableHour: [],
+          };
+          for (let j = 0; j < facility.hourAvailable.length; j++) {
+            let element = facility.hourAvailable[j];
+            let ada = false;
+            for (let k = 0; k < date.length; k++) {
+              const item = date[k];
+              if (
+                item.bookingHour === element &&
+                item.bookingDate === tanggal &&
+                item.bookingMonth === bulan &&
+                item.bookingYear === tahun
+              ) {
+                ada = true;
+              }
+            }
+            if (ada === false) {
+              data.availableHour.push(element);
+            }
+          }
+          hasil.push(data);
+        }
+
+        return res.json({
+          success: true,
+          data: hasil,
+        });
+      } else {
+        let now = new Date();
+        let tahun = now.getFullYear();
+        const hasil = [];
+        for (let i = 0; i < 7; i++) {
+          let waktu = new Date(now);
+          waktu.setDate(waktu.getDate() + i);
+          let tanggal = waktu.getDate();
+          let bulan = waktu.getMonth() + 1;
+          const data = {
+            date: tanggal,
+            month: bulan,
+            year: tahun,
+            availableHour: facility.hourAvailable,
+          };
+          hasil.push(data);
+        }
+
+        return res.json({
+          success: true,
+          data: hasil,
+        });
+      }
     } catch (e) {
       return res.json({
         success: false,

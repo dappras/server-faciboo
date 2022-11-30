@@ -29,5 +29,10 @@ router.post(
 );
 
 router.post("/get-my-facility", authLogin, facilityController.getMyFacility);
+router.post(
+  "/get-available-date",
+  authLogin,
+  facilityController.getAvailableDate
+);
 
 module.exports = router;

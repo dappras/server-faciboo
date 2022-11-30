@@ -1,5 +1,6 @@
 const express = require("express");
 const Bank = require("../models/bank");
+const Booking = require("../models/booking");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -50,13 +51,20 @@ module.exports = {
 
   addBank: async (req, res) => {
     try {
-      const { name, nameBank, nomorRekening } = req.body;
+      const { name, nameBank, nomorRekening, idBooking } = req.body;
+      const booking = await Booking.findOne({ _id: idBooking });
+
       const hasil = await Bank.create({
         nameBank,
         nomorRekening,
         name,
         imageUrl: `images/${req.file.filename}`,
       });
+
+      booking.status = 1;
+      booking.proofPaymentId = hasil._id;
+      booking.save();
+
       return res.json({
         success: true,
         msg: "success create data",

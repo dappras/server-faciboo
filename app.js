@@ -17,6 +17,7 @@ const bankRouter = require("./routes/bank");
 const facilityRouter = require("./routes/facility");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
+const bookingRouter = require("./routes/booking");
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use("/bank", bankRouter);
 app.use("/facility", facilityRouter);
 app.use("/user", userRouter);
 app.use("/profile", profileRouter);
+app.use("/booking", bookingRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

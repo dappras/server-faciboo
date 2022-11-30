@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const bookingSchema = new mongoose.Schema({
+const bookingDateSchema = new mongoose.Schema({
   bookingDate: {
     type: Number,
     required: true,
@@ -15,29 +15,16 @@ const bookingSchema = new mongoose.Schema({
     required: true,
   },
   bookingHour: {
-    type: Array,
+    type: String,
     required: true,
   },
   invoice: {
     type: String,
     required: true,
   },
-  total: {
-    type: Number,
-    required: true,
-  },
-  status: {
-    type: Number,
-    default: 0,
-  },
   facilityId: {
     type: ObjectId,
     ref: "Facility",
-    required: true,
-  },
-  userFacilityId: {
-    type: ObjectId,
-    ref: "User",
     required: true,
   },
   userId: {
@@ -45,10 +32,6 @@ const bookingSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  proofPaymentId: {
-    type: ObjectId,
-    ref: "Bank",
-  },
 });
 
-module.exports = mongoose.model("Booking", bookingSchema);
+module.exports = mongoose.model("Booking-Date", bookingDateSchema);
