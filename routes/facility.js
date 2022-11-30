@@ -28,4 +28,6 @@ router.post(
   facilityController.deleteFacility
 );
 
+router.post("/get-my-facility", authLogin, facilityController.getMyFacility);
+
 module.exports = router;
