@@ -1,6 +1,7 @@
 const express = require("express");
 const Category = require("../models/category");
 const Facility = require("../models/facility");
+const Image = require("../models/image");
 
 module.exports = {
   getCategory: async (req, res) => {
@@ -92,8 +93,30 @@ module.exports = {
       const arrFacility = [];
 
       for (let i = 0; i < category.facilityId.length; i++) {
-        let facility = await Facility.findOne({ _id: category.facilityId[i] });
-        arrFacility.push(facility);
+        let facilityItem = await Facility.findOne({
+          _id: category.facilityId[i],
+        });
+        const hasilItem = {
+          name: facilityItem.name,
+          address: facilityItem.address,
+          description: facilityItem.description,
+          price: facilityItem.price,
+          urlMaps: facilityItem.urlMaps,
+          hourAvailable: facilityItem.hourAvailable,
+          categoryId: facilityItem.categoryId,
+          image: [],
+          userId: facilityItem.userId,
+        };
+        for (let j = 0; j < facilityItem.imageId.length; j++) {
+          const image = facilityItem.imageId[j];
+          const imageFacility = await Image.findOne({ _id: image });
+
+          hasilItem.image.push(
+            `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+          );
+        }
+
+        arrFacility.push(hasilItem);
       }
 
       return res.json({
