@@ -3,6 +3,8 @@ const express = require("express");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const fs = require("fs-extra");
+const path = require("path");
 
 module.exports = {
   getProfile: async (req, res) => {
