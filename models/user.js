@@ -30,6 +30,10 @@ const userScheme = new mongoose.Schema({
   nameAccountBank: {
     type: String,
   },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("User", userScheme);
