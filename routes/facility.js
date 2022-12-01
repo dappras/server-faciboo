@@ -35,4 +35,10 @@ router.post(
   facilityController.getAvailableDate
 );
 
+router.post(
+  "/get-bank-facility",
+  authLogin,
+  facilityController.getBankFacility
+);
+
 module.exports = router;

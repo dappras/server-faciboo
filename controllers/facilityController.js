@@ -343,4 +343,46 @@ module.exports = {
       });
     }
   },
+
+  getBankFacility: async (req, res) => {
+    const { facilityId } = req.body;
+    try {
+      const facility = await Facility.findOne({ _id: facilityId });
+      const user = await User.findOne({ _id: facility.userId });
+
+      if (
+        (user.nameBank == null ||
+          user.nameBank == undefined ||
+          user.nameBank == "") &&
+        (user.nomorRekening == null ||
+          user.nomorRekening == undefined ||
+          user.nomorRekening == "") &&
+        (user.nameAccountBank == null ||
+          user.nameAccountBank == undefined ||
+          user.nameAccountBank == "")
+      ) {
+        return res.json({
+          success: false,
+          msg: "Pemilik fasilitas belum melengkapi informasi akun",
+        });
+      } else {
+        const hasil = {
+          nameBank: user.nameBank,
+          nomorRekening: user.nomorRekening,
+          nameAccountBank: user.nameAccountBank,
+        };
+
+        return res.json({
+          success: true,
+          msg: "Success getting data !!",
+          data: hasil,
+        });
+      }
+    } catch (e) {
+      return res.json({
+        success: false,
+        msg: e.message,
+      });
+    }
+  },
 };
