@@ -23,7 +23,8 @@ module.exports = {
   },
 
   editProflie: async (req, res) => {
-    const { name, password } = req.body;
+    const { name, password, nameBank, nomorRekening, nameAccountBank } =
+      req.body;
     try {
       const token = req.token;
       const profile = await User.findOne({ token: token });
@@ -31,6 +32,15 @@ module.exports = {
       if (password === undefined) {
         profile.name = name;
         profile.token = token;
+        if (
+          nameBank != undefined ||
+          nomorRekening != undefined ||
+          nameAccountBank != undefined
+        ) {
+          profile.nameBank = nameBank;
+          profile.nomorRekening = nomorRekening;
+          profile.nameAccountBank = nameAccountBank;
+        }
       } else {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
@@ -38,6 +48,15 @@ module.exports = {
         profile.name = name;
         profile.password = hashPassword;
         profile.token = token;
+        if (
+          nameBank != undefined ||
+          nomorRekening != undefined ||
+          nameAccountBank != undefined
+        ) {
+          profile.nameBank = nameBank;
+          profile.nomorRekening = nomorRekening;
+          profile.nameAccountBank = nameAccountBank;
+        }
       }
 
       await profile.save();

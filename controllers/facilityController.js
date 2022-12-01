@@ -65,36 +65,53 @@ module.exports = {
 
       const user = await User.findOne({ token: req.token });
 
-      if (req.files.length > 0) {
-        const category = await Category.findOne({ _id: categoryId });
-        const newFacility = {
-          categoryId: category._id,
-          name,
-          address,
-          description,
-          price,
-          urlMaps,
-          hourAvailable,
-          userId: user._id,
-        };
-        const facility = await Facility.create(newFacility);
-
-        category.facilityId.push({ _id: facility._id });
-        await category.save();
-
-        for (let i = 0; i < req.files.length; i++) {
-          const imageSave = await Image.create({
-            imageUrl: `images/${req.files[i].filename}`,
-          });
-          facility.imageId.push({ _id: imageSave._id });
-          await facility.save();
-        }
-
+      if (
+        (user.nameBank == null ||
+          user.nameBank == undefined ||
+          user.nameBank == "") &&
+        (user.nomorRekening == null ||
+          user.nomorRekening == undefined ||
+          user.nomorRekening == "") &&
+        (user.nameAccountBank == null ||
+          user.nameAccountBank == undefined ||
+          user.nameAccountBank == "")
+      ) {
         return res.json({
-          success: true,
-          msg: "success create data",
-          data: facility,
+          success: false,
+          msg: "Silahkan lengkapi informasi bank user anda",
         });
+      } else {
+        if (req.files.length > 0) {
+          const category = await Category.findOne({ _id: categoryId });
+          const newFacility = {
+            categoryId: category._id,
+            name,
+            address,
+            description,
+            price,
+            urlMaps,
+            hourAvailable,
+            userId: user._id,
+          };
+          const facility = await Facility.create(newFacility);
+
+          category.facilityId.push({ _id: facility._id });
+          await category.save();
+
+          for (let i = 0; i < req.files.length; i++) {
+            const imageSave = await Image.create({
+              imageUrl: `images/${req.files[i].filename}`,
+            });
+            facility.imageId.push({ _id: imageSave._id });
+            await facility.save();
+          }
+
+          return res.json({
+            success: true,
+            msg: "success create data",
+            data: facility,
+          });
+        }
       }
     } catch (e) {
       return res.json({

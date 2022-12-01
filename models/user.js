@@ -21,6 +21,15 @@ const userScheme = new mongoose.Schema({
     type: String,
     required: true,
   },
+  nameBank: {
+    type: String,
+  },
+  nomorRekening: {
+    type: String,
+  },
+  nameAccountBank: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("User", userScheme);
