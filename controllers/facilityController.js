@@ -18,10 +18,35 @@ module.exports = {
           data: [],
         });
       } else {
+        hasil = [];
+        for (let i = 0; i < facility.length; i++) {
+          const facility = facility[i];
+          const hasilItem = {
+            name: facility.name,
+            address: facility.address,
+            description: facility.description,
+            price: facility.price,
+            urlMaps: facility.urlMaps,
+            hourAvailable: facility.hourAvailable,
+            categoryId: facility.categoryId,
+            image: [],
+            userId: facility.userId,
+          };
+          for (let j = 0; j < facility.imageId.length; j++) {
+            const image = facility.imageId[j];
+            const imageFacility = await Image.findOne({ _id: image });
+
+            hasilItem.image.push(
+              `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+            );
+          }
+
+          hasil.push(hasilItem);
+        }
         return res.json({
           success: true,
           msg: "success getting data",
-          data: facility,
+          data: hasil,
         });
       }
     } catch (e) {
@@ -40,10 +65,30 @@ module.exports = {
           data: [],
         });
       } else {
+        const hasilItem = {
+          name: facility.name,
+          address: facility.address,
+          description: facility.description,
+          price: facility.price,
+          urlMaps: facility.urlMaps,
+          hourAvailable: facility.hourAvailable,
+          categoryId: facility.categoryId,
+          image: [],
+          userId: facility.userId,
+        };
+        for (let j = 0; j < facility.imageId.length; j++) {
+          const image = facility.imageId[j];
+          const imageFacility = await Image.findOne({ _id: image });
+
+          hasilItem.image.push(
+            `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+          );
+        }
+
         return res.json({
           success: true,
           msg: "success getting data",
-          data: facility,
+          data: hasilItem,
         });
       }
     } catch (e) {
