@@ -20,20 +20,20 @@ module.exports = {
       } else {
         hasil = [];
         for (let i = 0; i < facility.length; i++) {
-          const facility = facility[i];
+          const facilityItem = facility[i];
           const hasilItem = {
-            name: facility.name,
-            address: facility.address,
-            description: facility.description,
-            price: facility.price,
-            urlMaps: facility.urlMaps,
-            hourAvailable: facility.hourAvailable,
-            categoryId: facility.categoryId,
+            name: facilityItem.name,
+            address: facilityItem.address,
+            description: facilityItem.description,
+            price: facilityItem.price,
+            urlMaps: facilityItem.urlMaps,
+            hourAvailable: facilityItem.hourAvailable,
+            categoryId: facilityItem.categoryId,
             image: [],
-            userId: facility.userId,
+            userId: facilityItem.userId,
           };
-          for (let j = 0; j < facility.imageId.length; j++) {
-            const image = facility.imageId[j];
+          for (let j = 0; j < facilityItem.imageId.length; j++) {
+            const image = facilityItem.imageId[j];
             const imageFacility = await Image.findOne({ _id: image });
 
             hasilItem.image.push(
