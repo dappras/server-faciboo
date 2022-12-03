@@ -38,7 +38,7 @@ module.exports = {
       const token = req.token;
       const profile = await User.findOne({ token: token });
 
-      if (req.file === undefined) {
+      if (req.fileName === undefined) {
         if (password === undefined) {
           profile.name = name;
           profile.token = token;
@@ -84,10 +84,10 @@ module.exports = {
           profile.imageUrl == null ||
           profile.imageUrl == ""
         ) {
-          profile.imageUrl = `images/${req.file.filename}`;
+          profile.imageUrl = `images/${req.fileName}`;
         } else {
           await fs.unlink(path.join(`public/${profile.imageUrl}`));
-          profile.imageUrl = `images/${req.file.filename}`;
+          profile.imageUrl = `images/${req.fileName}`;
         }
         if (password === undefined) {
           profile.name = name;

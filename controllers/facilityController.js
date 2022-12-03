@@ -133,6 +133,13 @@ module.exports = {
 
       const user = await User.findOne({ token: req.token });
 
+      if (req.fileName == undefined) {
+        return res.json({
+          success: false,
+          msg: "Please upload image",
+        });
+      }
+
       if (
         (user.nameBank == null ||
           user.nameBank == undefined ||
@@ -149,7 +156,7 @@ module.exports = {
           msg: "Silahkan lengkapi informasi bank user anda",
         });
       } else {
-        if (req.files.length > 0) {
+        if (req.fileName.length > 0) {
           const category = await Category.findOne({ _id: categoryId });
           const newFacility = {
             categoryId: category._id,
@@ -166,9 +173,9 @@ module.exports = {
           category.facilityId.push({ _id: facility._id });
           await category.save();
 
-          for (let i = 0; i < req.files.length; i++) {
+          for (let i = 0; i < req.fileName.length; i++) {
             const imageSave = await Image.create({
-              imageUrl: `images/${req.files[i].filename}`,
+              imageUrl: `images/${req.fileName[i]}`,
             });
             facility.imageId.push({ _id: imageSave._id });
             await facility.save();
@@ -204,13 +211,13 @@ module.exports = {
 
       const facility = await Facility.findOne({ _id: id });
 
-      if (req.files.length > 0) {
+      if (req.fileName != undefined) {
         for (let i = 0; i < facility.imageId.length; i++) {
           const imageSave = await Image.findOne({
             _id: facility.imageId[i]._id,
           });
           await fs.unlink(path.join(`public/${imageSave.imageUrl}`));
-          imageSave.imageUrl = `images/${req.files[i].filename}`;
+          imageSave.imageUrl = `images/${req.fileName[i]}`;
           await imageSave.save();
         }
         facility.name = name;

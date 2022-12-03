@@ -4,6 +4,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const bodyParser = require("body-parser");
 // mongoose
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB_CONNECTION);
@@ -22,6 +23,8 @@ const bookingRouter = require("./routes/booking");
 var app = express();
 var cors = require("cors");
 app.use(cors());
+
+app.use(bodyParser.json({ limit: "50mb" }));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

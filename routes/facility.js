@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const authLogin = require("../middlewares/auth");
 const facilityController = require("../controllers/facilityController");
-const { uploadSingle, uploadMultiple } = require("../middlewares/multer");
+const { uploadMultipleImage } = require("../middlewares/base64");
 
 router.post("/get-facility", authLogin, facilityController.getFacility);
 router.post(
@@ -13,19 +13,19 @@ router.post("/search-facility", authLogin, facilityController.searchFacility);
 router.post(
   "/add-facility",
   authLogin,
-  uploadMultiple,
+  uploadMultipleImage,
   facilityController.addFacility
 );
 router.post(
   "/edit-facility",
   authLogin,
-  uploadMultiple,
+  uploadMultipleImage,
   facilityController.editFacility
 );
 router.post(
   "/delete-facility",
   authLogin,
-  uploadMultiple,
+  uploadMultipleImage,
   facilityController.deleteFacility
 );
 

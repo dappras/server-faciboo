@@ -23,7 +23,7 @@ const authLogin = async (req, res, next) => {
     req.token = token;
     next();
   } catch (err) {
-    res.json({
+    return res.json({
       success: false,
       message: "Invalid Token !",
     });

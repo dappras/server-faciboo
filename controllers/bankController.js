@@ -51,20 +51,23 @@ module.exports = {
 
   addBank: async (req, res) => {
     try {
+      if (req.fileName == undefined) {
+        return res.json({
+          success: false,
+          msg: "Please upload image",
+        });
+      }
       const { name, nameBank, nomorRekening, idBooking } = req.body;
       const booking = await Booking.findOne({ _id: idBooking });
-
       const hasil = await Bank.create({
         nameBank,
         nomorRekening,
         name,
-        imageUrl: `images/${req.file.filename}`,
+        imageUrl: `images/${req.fileName}`,
       });
-
       booking.status = 1;
       booking.proofPaymentId = hasil._id;
       booking.save();
-
       return res.json({
         success: true,
         msg: "success create data",
@@ -79,7 +82,7 @@ module.exports = {
     const { id, name, nameBank, nomorRekening } = req.body;
     const bank = await Bank.findOne({ _id: id });
     try {
-      if (req.file === undefined) {
+      if (req.fileName === undefined) {
         bank.name = name;
         bank.nameBank = nameBank;
         bank.nomorRekening = nomorRekening;
@@ -90,7 +93,7 @@ module.exports = {
         bank.name = name;
         bank.nameBank = nameBank;
         bank.nomorRekening = nomorRekening;
-        bank.imageUrl = `images/${req.file.filename}`;
+        bank.imageUrl = `images/${req.fileName}`;
         await bank.save();
         return res.json({ success: true, msg: "success update data" });
       }
