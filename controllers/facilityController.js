@@ -22,6 +22,7 @@ module.exports = {
         for (let i = 0; i < facility.length; i++) {
           const facilityItem = facility[i];
           const hasilItem = {
+            _id: facilityItem._id,
             name: facilityItem.name,
             address: facilityItem.address,
             description: facilityItem.description,
@@ -66,6 +67,7 @@ module.exports = {
         });
       } else {
         const hasilItem = {
+          _id: facility._id,
           name: facility.name,
           address: facility.address,
           description: facility.description,
@@ -299,11 +301,51 @@ module.exports = {
 
       const facility = await Facility.find({ userId: user._id });
 
-      return res.json({
-        success: true,
-        msg: "success getting data!!",
-        data: facility,
-      });
+      if (facility == []) {
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: [],
+        });
+      } else {
+        hasil = [];
+        for (let i = 0; i < facility.length; i++) {
+          const facilityItem = facility[i];
+          const hasilItem = {
+            _id: facilityItem._id,
+            name: facilityItem.name,
+            address: facilityItem.address,
+            description: facilityItem.description,
+            price: facilityItem.price,
+            urlMaps: facilityItem.urlMaps,
+            hourAvailable: facilityItem.hourAvailable,
+            categoryId: facilityItem.categoryId,
+            image: [],
+            userId: facilityItem.userId,
+          };
+          for (let j = 0; j < facilityItem.imageId.length; j++) {
+            const image = facilityItem.imageId[j];
+            const imageFacility = await Image.findOne({ _id: image });
+
+            hasilItem.image.push(
+              `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+            );
+          }
+
+          hasil.push(hasilItem);
+        }
+        return res.json({
+          success: true,
+          msg: "success getting data",
+          data: hasil,
+        });
+      }
+
+      // return res.json({
+      //   success: true,
+      //   msg: "success getting data!!",
+      //   data: facility,
+      // });
     } catch (e) {
       return res.json({
         success: false,
