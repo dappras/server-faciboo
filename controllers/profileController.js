@@ -26,8 +26,14 @@ module.exports = {
   },
 
   editProflie: async (req, res) => {
-    const { name, password, nameBank, nomorRekening, nameAccountBank } =
-      req.body;
+    const {
+      name,
+      password,
+      address,
+      nameBank,
+      nomorRekening,
+      nameAccountBank,
+    } = req.body;
     try {
       const token = req.token;
       const profile = await User.findOne({ token: token });
@@ -36,6 +42,7 @@ module.exports = {
         if (password === undefined) {
           profile.name = name;
           profile.token = token;
+          profile.address = address;
           if (
             nameBank != undefined ||
             nomorRekening != undefined ||
@@ -52,6 +59,7 @@ module.exports = {
           profile.name = name;
           profile.password = hashPassword;
           profile.token = token;
+          profile.address = address;
           if (
             nameBank != undefined ||
             nomorRekening != undefined ||
@@ -84,6 +92,7 @@ module.exports = {
         if (password === undefined) {
           profile.name = name;
           profile.token = token;
+          profile.address = address;
           if (
             nameBank != undefined ||
             nomorRekening != undefined ||
@@ -100,6 +109,7 @@ module.exports = {
           profile.name = name;
           profile.password = hashPassword;
           profile.token = token;
+          profile.address = address;
           if (
             nameBank != undefined ||
             nomorRekening != undefined ||

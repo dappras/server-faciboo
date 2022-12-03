@@ -98,6 +98,27 @@ module.exports = {
     }
   },
 
+  searchFacility: async (req, res) => {
+    const { search } = req.body;
+
+    try {
+      const facility = await Facility.find({
+        $or: [{ name: { $regex: search } }],
+      });
+
+      return res.json({
+        success: true,
+        msg: "success getting data",
+        data: facility,
+      });
+    } catch (e) {
+      return res.json({
+        success: false,
+        msg: e.message,
+      });
+    }
+  },
+
   addFacility: async (req, res) => {
     try {
       const {

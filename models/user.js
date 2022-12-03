@@ -17,6 +17,9 @@ const userScheme = new mongoose.Schema({
     type: String,
     required: true,
   },
+  address: {
+    type: String,
+  },
   token: {
     type: String,
     required: true,

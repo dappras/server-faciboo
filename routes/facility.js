@@ -9,6 +9,7 @@ router.post(
   authLogin,
   facilityController.getDetailFacility
 );
+router.post("/search-facility", authLogin, facilityController.searchFacility);
 router.post(
   "/add-facility",
   authLogin,
