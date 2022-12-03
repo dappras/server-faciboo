@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Booking = require("../models/booking");
 const BookingDate = require("../models/booking-date");
 const Bank = require("../models/bank");
+const Image = require("../models/image");
 const Facility = require("../models/facility");
 
 module.exports = {
@@ -105,8 +106,29 @@ module.exports = {
       const booking = await Booking.findOne({ _id: bookingId });
       const facility = await Facility.findOne({ _id: booking.facilityId });
 
+      const hasilItem = {
+        _id: facility._id,
+        name: facility.name,
+        address: facility.address,
+        description: facility.description,
+        price: facility.price,
+        urlMaps: facility.urlMaps,
+        hourAvailable: facility.hourAvailable,
+        categoryId: facility.categoryId,
+        image: [],
+        userId: facility.userId,
+      };
+      for (let j = 0; j < facility.imageId.length; j++) {
+        const image = facility.imageId[j];
+        const imageFacility = await Image.findOne({ _id: image });
+
+        hasilItem.image.push(
+          `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+        );
+      }
+
       const hasil = {
-        facility: facility,
+        facility: hasilItem,
         booking: booking,
       };
 
@@ -130,8 +152,31 @@ module.exports = {
       const facility = await Facility.findOne({ _id: booking.facilityId });
       const proofPayment = await Bank.findOne({ _id: booking.proofPaymentId });
 
+      const hasilItem = {
+        _id: facility._id,
+        name: facility.name,
+        address: facility.address,
+        description: facility.description,
+        price: facility.price,
+        urlMaps: facility.urlMaps,
+        hourAvailable: facility.hourAvailable,
+        categoryId: facility.categoryId,
+        image: [],
+        userId: facility.userId,
+      };
+      for (let j = 0; j < facility.imageId.length; j++) {
+        const image = facility.imageId[j];
+        const imageFacility = await Image.findOne({ _id: image });
+
+        hasilItem.image.push(
+          `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+        );
+      }
+
+      proofPayment.imageUrl = `http://103.23.199.203:3000/${proofPayment.imageUrl}`;
+
       const hasil = {
-        facility: facility,
+        facility: hasilItem,
         booking: booking,
         proofPayment: proofPayment,
       };
