@@ -42,4 +42,10 @@ router.post(
   facilityController.getBankFacility
 );
 
+router.post(
+  "/get-latest-facility",
+  authLogin,
+  facilityController.getLatestFacility
+);
+
 module.exports = router;
