@@ -97,6 +97,7 @@ module.exports = {
           _id: category.facilityId[i],
         });
         const hasilItem = {
+          id: facilityItem._id,
           name: facilityItem.name,
           address: facilityItem.address,
           description: facilityItem.description,
