@@ -59,10 +59,42 @@ module.exports = {
       const user = await User.findOne({ token: req.token });
       const booking = await Booking.find({ userId: user._id });
 
+      const hasil = [];
+
+      for (let i = 0; i < booking.length; i++) {
+        const item = booking[i];
+
+        const facility = await Facility.findOne({ _id: item.facilityId });
+
+        const hasilItem = {
+          _id: facility._id,
+          name: facility.name,
+          address: facility.address,
+          description: facility.description,
+          price: facility.price,
+          urlMaps: facility.urlMaps,
+          hourAvailable: facility.hourAvailable,
+          categoryId: facility.categoryId,
+          image: [],
+          userId: facility.userId,
+        };
+        for (let j = 0; j < facility.imageId.length; j++) {
+          const image = facility.imageId[j];
+          const imageFacility = await Image.findOne({ _id: image });
+
+          hasilItem.image.push(
+            `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+          );
+        }
+
+        const hasilLoop = { booking: item, facility: hasilItem };
+        hasil.push(hasilLoop);
+      }
+
       return res.json({
         success: true,
         msg: "success getting data!!",
-        data: booking,
+        data: hasil,
       });
     } catch (e) {
       return res.json({
@@ -83,7 +115,31 @@ module.exports = {
         const element = booking[i];
 
         if (element.status === 1) {
-          hasil.push(element);
+          const facility = await Facility.findOne({ _id: element.facilityId });
+
+          const hasilItem = {
+            _id: facility._id,
+            name: facility.name,
+            address: facility.address,
+            description: facility.description,
+            price: facility.price,
+            urlMaps: facility.urlMaps,
+            hourAvailable: facility.hourAvailable,
+            categoryId: facility.categoryId,
+            image: [],
+            userId: facility.userId,
+          };
+          for (let j = 0; j < facility.imageId.length; j++) {
+            const image = facility.imageId[j];
+            const imageFacility = await Image.findOne({ _id: image });
+
+            hasilItem.image.push(
+              `http://103.23.199.203:3000/${imageFacility.imageUrl}`
+            );
+          }
+
+          const hasilLoop = { booking: element, facility: hasilItem };
+          hasil.push(hasilLoop);
         }
       }
 
