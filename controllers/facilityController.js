@@ -250,6 +250,9 @@ module.exports = {
           const imageSave = await Image.findOne({
             _id: facility.imageId[i]._id,
           });
+          if (req.fileName[i] == undefined) {
+            break;
+          }
           await fs.unlink(path.join(`public/${imageSave.imageUrl}`));
           imageSave.imageUrl = `images/${req.fileName[i]}`;
           await imageSave.save();
