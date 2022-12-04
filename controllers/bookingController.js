@@ -55,9 +55,22 @@ module.exports = {
   },
 
   getUserBooking: async (req, res) => {
+    const { status } = req.body;
     try {
       const user = await User.findOne({ token: req.token });
-      const booking = await Booking.find({ userId: user._id });
+      const bookingAll = await Booking.find({ userId: user._id });
+
+      let booking = [];
+
+      if (status != undefined) {
+        bookingAll.forEach((item) => {
+          if (item.status == status) {
+            booking.push(item);
+          }
+        });
+      } else {
+        booking = bookingAll;
+      }
 
       const hasil = [];
 
