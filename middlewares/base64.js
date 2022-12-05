@@ -4,7 +4,7 @@ const path = require("path");
 
 const uploadImage = async (req, res, next) => {
   const { image } = req.body;
-  if (image == undefined) {
+  if (image == undefined || image == []) {
     req.fileName = undefined;
     next();
   } else {
@@ -54,7 +54,7 @@ const uploadImage = async (req, res, next) => {
 const uploadMultipleImage = async (req, res, next) => {
   const { image } = req.body;
 
-  if (image == undefined) {
+  if (image == undefined || image == []) {
     req.fileName = undefined;
     next();
   } else {
