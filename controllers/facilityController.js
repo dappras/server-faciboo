@@ -82,9 +82,10 @@ module.exports = {
           const image = facility.imageId[j];
           const imageFacility = await Image.findOne({ _id: image });
 
-          hasilItem.image.push(
-            `http://103.23.199.203:3000/${imageFacility.imageUrl}`
-          );
+          hasilItem.image.push({
+            id: image,
+            imageUrl: `http://103.23.199.203:3000/${imageFacility.imageUrl}`,
+          });
         }
 
         return res.json({
