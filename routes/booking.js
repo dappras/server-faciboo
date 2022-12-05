@@ -3,6 +3,7 @@ const authLogin = require("../middlewares/auth");
 const bookingController = require("../controllers/bookingController");
 
 router.post("/booking", authLogin, bookingController.booking);
+router.post("/cancel-booking", authLogin, bookingController.cancelBooking);
 router.post("/get-user-booking", authLogin, bookingController.getUserBooking);
 router.post(
   "/get-merchant-booking",
