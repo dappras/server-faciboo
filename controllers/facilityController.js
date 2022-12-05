@@ -242,22 +242,31 @@ module.exports = {
         urlMaps,
         hourAvailable,
         categoryId,
+        removedImage,
       } = req.body;
 
       const facility = await Facility.findOne({ _id: id });
 
       if (req.fileName != undefined) {
-        for (let i = 0; i < facility.imageId.length; i++) {
-          const imageSave = await Image.findOne({
-            _id: facility.imageId[i]._id,
-          });
-          if (req.fileName[i] == undefined) {
-            break;
-          }
-          await fs.unlink(path.join(`public/${imageSave.imageUrl}`));
-          imageSave.imageUrl = `images/${req.fileName[i]}`;
-          await imageSave.save();
+        for (let i = 0; i < removedImage.length; i++) {
+          const item = removedImage[i];
+          await Facility.updateMany(
+            {},
+            { $pull: { imageId: { $in: [item] } } }
+          );
+          const image = await Image.findOne({ _id: item });
+          await fs.unlink(path.join(`public/${image.imageUrl}`));
+          await image.remove();
         }
+
+        for (let i = 0; i < req.fileName.length; i++) {
+          const item = req.fileName[i];
+          const imageSave = await Image.create({
+            imageUrl: `images/${item}`,
+          });
+          await facility.imageId.push(imageSave._id);
+        }
+
         facility.name = name;
         facility.address = address;
         facility.description = description;
