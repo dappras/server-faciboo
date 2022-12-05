@@ -296,7 +296,6 @@ module.exports = {
         return res.json({
           success: true,
           msg: "success update data",
-          data: facility,
         });
       } else {
         facility.name = name;
