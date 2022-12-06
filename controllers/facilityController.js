@@ -2,6 +2,7 @@ const express = require("express");
 const Category = require("../models/category");
 const User = require("../models/user");
 const Facility = require("../models/facility");
+const Booking = require("../models/booking");
 const Image = require("../models/image");
 const BookingDate = require("../models/booking-date");
 const fs = require("fs-extra");
@@ -359,6 +360,15 @@ module.exports = {
       const category = await Category.findOne({ _id: facility.categoryId });
       await Category.updateMany({}, { $pull: { facilityId: { $in: [id] } } });
       await category.save();
+
+      const bookingFacility = await Booking.find({ facilityId: facility._id });
+      await bookingFacility.remove();
+
+      const bookingDateFacility = await BookingDate.find({
+        facilityId: facility._id,
+      });
+      await bookingDateFacility.remove();
+
       await facility.remove();
       return res.json({ success: true, msg: "success delete data" });
     } catch (e) {
